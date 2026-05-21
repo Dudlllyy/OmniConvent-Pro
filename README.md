@@ -22,6 +22,13 @@ To process media files, the application requires **FFmpeg**.
 1. Download the `ffmpeg.exe` binary (e.g., from [Gyan.dev](https://www.gyan.dev/ffmpeg/builds/)).
 2. Place the `ffmpeg.exe` file directly into the root folder of the project.
 
+### 📦 Ready-to-Use Executable (Windows)
+If you don't want to install Python or Java dependencies, you can download the pre-compiled standalone version.
+
+1. Go to the **[Releases](../../releases)** section on the right side of this repository.
+2. Download the latest `OmniConvert_Pro.exe`.
+3. Download `ffmpeg.exe` and place it in the exact same folder as your `OmniConvert_Pro.exe`.
+4. Run the program and enjoy!
 ### Python Version 🐍
 Ensure you have Python 3.8+ installed.
 ```bash
