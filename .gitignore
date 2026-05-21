@@ -1,0 +1,33 @@
+# ========================
+# OmniConvert Specific
+# ========================
+ffmpeg.exe
+icon.ico
+
+# ========================
+# Java & Maven
+# ========================
+target/
+*.jar
+*.war
+*.ear
+*.class
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# ========================
+# IDE & OS
+# ========================
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
