@@ -50,7 +50,6 @@ class UniversalConverter:
         _, input_ext = os.path.splitext(input_path.lower())
         _, output_ext = os.path.splitext(output_path.lower())
 
-        # Изображения, видео и аудио
         if input_ext in self.image_formats and output_ext in self.image_formats:
             self._convert_image(input_path, output_path)
         elif input_ext in self.video_formats and output_ext in self.audio_formats:
@@ -72,7 +71,7 @@ class UniversalConverter:
             self._convert_config(input_path, output_path, input_ext, output_ext)
 
         else:
-            raise ValueError(f"Конвертация из {input_ext} в {output_ext} не поддерживается.")
+            raise ValueError(f"Convert from {input_ext} в {output_ext} not supported.")
 
     def _convert_image(self, input_path, output_path):
         img = Image.open(input_path)
@@ -87,7 +86,7 @@ class UniversalConverter:
         video = VideoFileClip(input_path)
         if video.audio is None:
             video.close()
-            raise ValueError("В видео нет звуковой дорожки.")
+            raise ValueError("There is no audio line in the video.")
         video.audio.write_audiofile(output_path, logger=None)
         video.close()
 
@@ -149,6 +148,7 @@ class UniversalConverter:
             else:
                 yaml.dump(data, f, allow_unicode=True, default_flow_style=False)
 
+
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
@@ -161,15 +161,13 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
         self.title("OmniConvert Pro")
         self.geometry("480x480")
         self.resizable(True, True)
-        self.minsize(400,400)
-        # --- УМНАЯ ЗАГРУЗКА ИКОНКИ ДЛЯ ОКНА ---
+        self.minsize(400, 400)
         if os.path.exists("icon.ico"):
             self.iconbitmap("icon.ico")
-        # --------------------------------------
 
         self.converter = UniversalConverter()
         self.selected_files = []
-        self.is_expanded = False  # Флаг: открыта шторка или нет
+        self.is_expanded = False
 
         self.main_frame = ctk.CTkFrame(self, corner_radius=15)
         self.main_frame.pack(pady=20, padx=20, fill="both", expand=True)
@@ -187,7 +185,7 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
 
         self.btn_select = ctk.CTkButton(
             self.main_frame,
-            text="Выбрать файлы",
+            text="Select files",
             font=btn_font,
             command=self.choose_files,
             corner_radius=8,
@@ -196,27 +194,21 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
             hover_color="#2563eb"
         )
         self.btn_select.pack(pady=(0, 15))
-
-        # ==========================================
-        # УМНАЯ ШТОРКА (АККОРДЕОН)
-        # ==========================================
         self.accordion_frame = ctk.CTkFrame(self.main_frame, fg_color="transparent")
         self.accordion_frame.pack(fill="x", padx=15, pady=(0, 15))
-
-        # Заголовок шторки (Текст + Кнопка-стрелочка)
         self.accordion_header = ctk.CTkFrame(self.accordion_frame, fg_color="transparent")
         self.accordion_header.pack(fill="x")
 
         self.lbl_file_count = ctk.CTkLabel(
             self.accordion_header,
-            text="Перетащите файлы сюда",
+            text="Drag files here",
             text_color="gray"
         )
         self.lbl_file_count.pack(side="left", padx=5)
 
         self.btn_toggle = ctk.CTkButton(
             self.accordion_header,
-            text="▼ Развернуть",
+            text="▼",
             width=100, height=24,
             fg_color="transparent",
             hover_color="#334155",
@@ -224,20 +216,15 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
             font=ctk.CTkFont(size=12, weight="bold"),
             command=self.toggle_file_list
         )
-        # Изначально кнопку не показываем, так как список пуст
 
-        # Сам список файлов (Изначально спрятан!)
         self.file_list_frame = ctk.CTkScrollableFrame(
             self.accordion_frame,
             height=100,
             corner_radius=8,
-            fg_color="#1e293b"  # Темный фон, чтобы выделялось при открытии
+            fg_color="#1e293b"
         )
 
-        # ==========================================
-        # Нижняя часть интерфейса
-        # ==========================================
-        self.lbl_format = ctk.CTkLabel(self.main_frame, text="Целевой формат:", font=ctk.CTkFont(weight="bold"))
+        self.lbl_format = ctk.CTkLabel(self.main_frame, text="Select format:", font=ctk.CTkFont(weight="bold"))
         self.lbl_format.pack()
 
         self.combo_format = ctk.CTkOptionMenu(
@@ -252,12 +239,12 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
 
         self.btn_convert = ctk.CTkButton(
             self.main_frame,
-            text="Конвертировать",
+            text="Convert",
             font=btn_font,
             command=self.start_conversion,
             corner_radius=8,
             height=45,
-            fg_color="#3b82f6",  # Изумрудный "Pro" цвет
+            fg_color="#3b82f6",
             hover_color="#059669",
             state="disabled"
         )
@@ -269,26 +256,24 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
         self.drop_target_register(DND_FILES)
         self.dnd_bind('<<Drop>>', self.drop_event)
 
-    # --- ЛОГИКА ШТОРКИ ---
     def toggle_file_list(self):
         if not self.selected_files:
             return
 
         self.is_expanded = not self.is_expanded
         if self.is_expanded:
-            self.btn_toggle.configure(text="▲ Свернуть")
-            self.file_list_frame.pack(fill="x", pady=(5, 0))  # Показываем список
+            self.btn_toggle.configure(text="▲")
+            self.file_list_frame.pack(fill="x", pady=(5, 0))
         else:
-            self.btn_toggle.configure(text="▼ Развернуть")
-            self.file_list_frame.pack_forget()  # Прячем список
+            self.btn_toggle.configure(text="▼")
+            self.file_list_frame.pack_forget()
 
     def force_close_accordion(self):
         self.is_expanded = False
-        self.btn_toggle.configure(text="▼ Развернуть")
+        self.btn_toggle.configure(text="▼")
         self.file_list_frame.pack_forget()
-        self.btn_toggle.pack_forget()  # Прячем даже кнопку, если файлов 0
+        self.btn_toggle.pack_forget()
 
-    # --- ЛОГИКА ФАЙЛОВ ---
     def drop_event(self, event):
         filepaths = self.tk.splitlist(event.data)
         self.add_files_to_queue(filepaths)
@@ -316,30 +301,26 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
         count = len(self.selected_files)
 
         if count == 0:
-            self.lbl_file_count.configure(text="Перетащите файлы сюда", text_color="gray")
-            self.force_close_accordion()  # Закрываем шторку, если файлов не осталось
+            self.lbl_file_count.configure(text="Drag files here", text_color="gray")
+            self.force_close_accordion()
             self.combo_format.configure(values=["-"], state="disabled")
             self.combo_format.set("-")
             self.btn_convert.configure(state="disabled")
             self.lbl_status.configure(text="")
             return
 
-        # Обновляем текст заголовка
         if count == 1:
             filename = os.path.basename(self.selected_files[0])
             display_name = filename if len(filename) < 25 else filename[:22] + "..."
-            self.lbl_file_count.configure(text=f"Выбран: {display_name}", text_color="white")
+            self.lbl_file_count.configure(text=f"Selected: {display_name}", text_color="white")
         else:
-            self.lbl_file_count.configure(text=f"Выбрано файлов: {count} шт.", text_color="white")
+            self.lbl_file_count.configure(text=f"Selected files: {count} ", text_color="white")
 
-        # Показываем кнопку-стрелочку, так как файлы есть
         self.btn_toggle.pack(side="right")
 
-        # Адаптируем высоту спрятанного списка (чтобы он был красивым при развертывании)
         height = min(count * 35, 110)
         self.file_list_frame.configure(height=height)
 
-        # Рисуем файлы внутри шторки
         for file_path in self.selected_files:
             row_frame = ctk.CTkFrame(self.file_list_frame, fg_color="transparent")
             row_frame.pack(fill="x", pady=2)
@@ -357,7 +338,6 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
             )
             btn_remove.pack(side="right")
 
-        # Пересчитываем общие форматы
         common_formats = None
         for path in self.selected_files:
             _, ext = os.path.splitext(path)
@@ -380,10 +360,10 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
             self.combo_format.set("-")
             self.btn_convert.configure(state="disabled")
             if count > 1:
-                self.lbl_status.configure(text="Конфликт форматов! Разверните и удалите лишние ☝️",
+                self.lbl_status.configure(text="Format conflict! Delete unnecessary files.",
                                           text_color="#f59e0b")
             else:
-                self.lbl_status.configure(text="Формат не поддерживается", text_color="#ef4444")
+                self.lbl_status.configure(text="Format not supported", text_color="#ef4444")
 
     def start_conversion(self):
         if not self.selected_files or self.combo_format.get() == "-":
@@ -397,7 +377,7 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
                 if isinstance(child, ctk.CTkButton):
                     child.configure(state="disabled")
 
-        self.lbl_status.configure(text=f"Подготовка...", text_color="#3b82f6")
+        self.lbl_status.configure(text=f"Running...", text_color="#3b82f6")
         thread = threading.Thread(target=self._run_conversion_thread, args=(self.selected_files, target_ext))
         thread.start()
 
@@ -406,17 +386,17 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
         success_count = 0
         errors = []
         labels = {
-            '.png': 'картинка', '.jpg': 'картинка', '.jpeg': 'картинка', '.webp': 'картинка', '.bmp': 'картинка',
-            '.ico': 'иконка', '.mp4': 'видео', '.avi': 'видео', '.mkv': 'видео', '.mov': 'видео',
-            '.mp3': 'аудио', '.wav': 'аудио', '.ogg': 'аудио', '.flac': 'аудио', '.gif': 'гифка',
-            '.json': 'конфиг', '.yaml': 'конфиг', '.yml': 'конфиг', '.csv': 'таблица', '.xlsx': 'таблица',
-            '.html': 'документ'
+            '.png': 'picture', '.jpg': 'picture', '.jpeg': 'picture', '.webp': 'picture', '.bmp': 'picture',
+            '.ico': 'icon', '.mp4': 'video', '.avi': 'video', '.mkv': 'video', '.mov': 'video',
+            '.mp3': 'audio', '.wav': 'audio', '.ogg': 'audio', '.flac': 'audio', '.gif': 'GIF',
+            '.json': 'config', '.yaml': 'config', '.yml': 'config', '.csv': 'table', '.xlsx': 'table',
+            '.html': 'document'
         }
 
-        category_label = labels.get(target_ext.lower(), 'конвертировано')
+        category_label = labels.get(target_ext.lower(), 'converted')
 
         for i, input_path in enumerate(input_paths):
-            self.after(0, self.lbl_status.configure, {"text": f"Конвертация... {i + 1}/{total}"})
+            self.after(0, self.lbl_status.configure, {"text": f"Conversion... {i + 1}/{total}"})
             base_path, _ = os.path.splitext(input_path)
             output_path = f"{base_path} ({category_label}){target_ext}"
 
@@ -432,22 +412,22 @@ class ModernConverterApp(ctk.CTk, TkinterDnD.DnDWrapper):
         self.btn_convert.configure(state="normal")
 
         if success_count == total:
-            self.lbl_status.configure(text="Все файлы успешно сохранены!", text_color="#10b981")
+            self.lbl_status.configure(text="All files saved successfully!", text_color="#10b981")
             self.selected_files.clear()
             self.refresh_ui()
-            notify_title = "Успех! ✨"
-            notify_message = f"Конвертация завершена: {total} шт."
+            notify_title = "Success!"
+            notify_message = f"Conversion completed: {total} "
         elif success_count > 0:
-            self.lbl_status.configure(text=f"Готово: {success_count} из {total} (есть ошибки)", text_color="#f59e0b")
-            messagebox.showwarning("Частичный успех", "Некоторые файлы не конвертировались:\n" + "\n".join(errors[:5]))
-            notify_title = "Завершено с ошибками ⚠️"
-            notify_message = f"Готово: {success_count} из {total}."
+            self.lbl_status.configure(text=f"Ready: {success_count} of {total} (there are errors)", text_color="#f59e0b")
+            messagebox.showwarning("Partial success", "Some files were not converted:\n" + "\n".join(errors[:5]))
+            notify_title = "Completed with errors"
+            notify_message = f"Ready: {success_count} of {total}."
         else:
-            self.lbl_status.configure(text="Ошибка конвертации", text_color="#ef4444")
-            messagebox.showerror("Ошибка", "Ни один файл не был конвертирован.\n" + "\n".join(errors[:5]))
+            self.lbl_status.configure(text="Conversion error", text_color="#ef4444")
+            messagebox.showerror("Error", "No files have been converted.\n" + "\n".join(errors[:5]))
             self.refresh_ui()
-            notify_title = "Ошибка ❌"
-            notify_message = "Ни один файл не был конвертирован."
+            notify_title = "Error"
+            notify_message = "No files have been converted."
 
         try:
             notification.notify(
