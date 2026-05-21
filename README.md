@@ -40,14 +40,14 @@ Python Version 🐍
 Ensure you have Python 3.8+ installed.
    ```bash
   # Clone the repository
-  git clone [https://github.com/YOUR_USERNAME/OmniConvert.git](https://github.com/YOUR_USERNAME/OmniConvert.git)
-  cd OmniConvert
+  git clone [https://github.com/Dudlllyy/OmniConvent-Pro.git](https://github.com/Dudlllyy/OmniConvent-Pro.git)
+  cd OmniConvent-Pro
   
   # Install required dependencies
   pip install customtkinter tkinterdnd2 pillow moviepy pyyaml markdown pandas openpyxl plyer
   
   # Run the application
-  python main.py
+  python convent.py
   ```
 Java Version ☕
 
@@ -55,8 +55,8 @@ Requires JDK 17+ and Maven. The project utilizes FlatLaf for a modern dark inter
   ```bash
 
   # Clone the repository
-  git clone [https://github.com/YOUR_USERNAME/OmniConvert.git](https://github.com/YOUR_USERNAME/OmniConvert.git)
-  cd OmniConvert
+  git clone [https://github.com/Dudlllyy/OmniConvent-Pro.git](https://github.com/Dudlllyy/OmniConvent-Pro.git)
+  cd OmniConvent-Pro
 
   # Install dependencies and build via Maven
   mvn clean package
