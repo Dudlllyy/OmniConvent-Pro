@@ -29,4 +29,4 @@ Ensure you have Python 3.8+ installed.
 pip install customtkinter tkinterdnd2 pillow moviepy pyyaml markdown pandas openpyxl plyer
 
 # Run the application
-python main.py
+python convent.py
