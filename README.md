@@ -2,38 +2,73 @@
 
 **OmniConvert Pro** is a universal, fast, and modern desktop file converter. It supports batch processing, drag-and-drop functionality, and a smart format recognition system.
 
-Built with a strong focus on UX/UI, it features an adaptive file "accordion" queue, a sleek dark theme, and native Windows notifications. The project is fully implemented in two parallel versions: **Python** and **Java**.
+Built with a strong focus on UX/UI, it features an adaptive file "accordion" queue, a sleek dark theme, and native OS notifications. The project is fully implemented in two parallel versions: **Python** and **Java**.
 
 ---
 
 ## ✨ Key Features
 - 🖼 **Images:** `PNG`, `JPG/JPEG` (with auto-fill for transparency), `BMP`, `WEBP`, `ICO`.
-- 🎬 **Media (via FFmpeg):** Convert `MP4`, `AVI`, `MKV` to `MP3` or optimized `GIF`.
+- 🎬 **Media:** Convert `MP4`, `AVI`, `MKV` to `MP3` or optimized `GIF`.
 - 📄 **Data & Configs:** Mutual conversion of `JSON`, `YAML`, `CSV`, `XLSX`.
 - 📦 **Batch Processing:** Drop dozens of files of various formats at once — the engine will automatically find common extensions and block incompatible options.
 - 🎨 **Modern UI:** Adaptive window sizing, smooth accordion list for queued files, and targeted removal of individual files.
 
 ---
 
-## 🚀 Installation & Usage
+## 📥 Ready-to-Use Packages (No Setup Required)
 
-### Global Dependencies
-To process media files, the application requires **FFmpeg**.
-1. Download the `ffmpeg.exe` binary (e.g., from [Gyan.dev](https://www.gyan.dev/ffmpeg/builds/)).
-2. Place the `ffmpeg.exe` file directly into the root folder of the project.
+If you just want to use the app without installing development environments, you can download the pre-compiled versions directly from the **[Releases](../../releases)** section.
 
-### 📦 Ready-to-Use Executable (Windows)
-If you don't want to install any dependencies, you can download the pre-compiled standalone version.
+### For Windows Users (Python Standalone)
+1. Go to the Releases page and download the latest `OmniConvert_Pro.exe`.
+2. Run the program and enjoy! 
+*(Note: This version is completely standalone. It contains built-in FFmpeg and requires no extra installations).*
 
-1. Go to the **[Releases](../../releases)** section on the right side of this repository.
-2. Download the latest `OmniConvert_Pro.exe`.
-3. Run the program and enjoy! (No extra installations required)
+### For Cross-Platform Users (Java Version)
+1. Ensure you have **Java 17 or higher** installed on your system.
+2. Go to the Releases page and download `OmniConvert_Pro.jar`.
+3. Download the `ffmpeg` binary (e.g., from [Gyan.dev](https://www.gyan.dev/ffmpeg/builds/) for Windows or via package manager for Linux/macOS) and place it in the exact same folder as the `.jar` file.
+4. Run it by double-clicking the file or via terminal:
+   ```bash
+   java -jar OmniConvert_Pro.jar
 
-### Python Version 🐍
+### 🚀 Building from Source
+
+If you want to run or build the project from the source code, follow these instructions:
+Python Version 🐍
+
 Ensure you have Python 3.8+ installed.
-```bash
-# Install required dependencies
-pip install customtkinter tkinterdnd2 pillow moviepy pyyaml markdown pandas openpyxl plyer
+   ```bash
+  # Clone the repository
+  git clone [https://github.com/YOUR_USERNAME/OmniConvert.git](https://github.com/YOUR_USERNAME/OmniConvert.git)
+  cd OmniConvert
+  
+  # Install required dependencies
+  pip install customtkinter tkinterdnd2 pillow moviepy pyyaml markdown pandas openpyxl plyer
+  
+  # Run the application
+  python main.py
+  ```
+Java Version ☕
 
-# Run the application
-python convent.py
+Requires JDK 17+ and Maven. The project utilizes FlatLaf for a modern dark interface and TwelveMonkeys for extended image format support.
+  ```bash
+
+  # Clone the repository
+  git clone [https://github.com/YOUR_USERNAME/OmniConvert.git](https://github.com/YOUR_USERNAME/OmniConvert.git)
+  cd OmniConvert
+
+  # Install dependencies and build via Maven
+  mvn clean package
+
+  # Run the application (ensure ffmpeg.exe is in the root folder)
+  mvn exec:java -Dexec.mainClass="com.omniconvert.OmniConvertApp"
+  ```
+🛠 Tech Stack
+
+    Python: CustomTkinter, TkinterDnD, MoviePy, Pandas, Pillow.
+
+    Java: Swing + FlatLaf, Jackson, TwelveMonkeys ImageIO, Maven Assembly Plugin.
+
+Developed with passion by Artem. Ready for production.
+
