@@ -142,7 +142,6 @@ public class OmniConvertApp extends JFrame {
         repaint();
     }
 
-    // --- ЛОГИКА ФАЙЛОВ ---
     private void chooseFiles() {
         FileDialog fileDialog = new FileDialog(this, "Выберите файлы", FileDialog.LOAD);
         fileDialog.setMultipleMode(true);
@@ -198,7 +197,6 @@ public class OmniConvertApp extends JFrame {
             return;
         }
 
-        // Обновляем текст заголовка
         if (count == 1) {
             String name = selectedFiles.get(0).getName();
             String displayName = name.length() > 25 ? name.substring(0, 22) + "..." : name;
@@ -209,25 +207,20 @@ public class OmniConvertApp extends JFrame {
         lblFileCount.setForeground(Color.WHITE);
         btnToggle.setVisible(true);
 
-        // Динамическая высота списка (максимум 120px)
         int preferredHeight = Math.min(count * 35, 120);
         scrollPane.setMaximumSize(new Dimension(800, preferredHeight));
         scrollPane.setPreferredSize(new Dimension(scrollPane.getPreferredSize().width, preferredHeight));
 
-        // Рисуем плашки файлов
         for (File file : selectedFiles) {
             JPanel row = new JPanel(new BorderLayout());
             row.setOpaque(false);
             row.setBorder(new EmptyBorder(5, 10, 5, 10));
-
             String name = file.getName();
             String displayName = name.length() > 35 ? name.substring(0, 32) + "..." : name;
-
             JLabel nameLbl = new JLabel(displayName);
             nameLbl.setForeground(new Color(248, 250, 252));
             row.add(nameLbl, BorderLayout.CENTER);
 
-            // Кнопка удаления (Крестик)
             JButton btnRemove = new JButton("x");
             btnRemove.setContentAreaFilled(false);
             btnRemove.setBorderPainted(false);
@@ -241,7 +234,6 @@ public class OmniConvertApp extends JFrame {
             fileListPanel.add(row);
         }
 
-        // Пересечение форматов
         List<String> commonFormats = null;
         for (File f : selectedFiles) {
             String ext = f.getName().substring(f.getName().lastIndexOf("."));
@@ -265,14 +257,14 @@ public class OmniConvertApp extends JFrame {
             btnConvert.setEnabled(false);
             if (count > 1) {
                 lblStatus.setText("Конфликт форматов! Разверните и удалите лишние");
-                lblStatus.setForeground(new Color(245, 158, 11)); // Оранжевый
+                lblStatus.setForeground(new Color(245, 158, 11));
             } else {
                 lblStatus.setText("Формат не поддерживается");
-                lblStatus.setForeground(new Color(239, 68, 68)); // Красный
+                lblStatus.setForeground(new Color(239, 68, 68));
             }
         }
 
-        // Обновляем отрисовку окна
+
         revalidate();
         repaint();
     }
@@ -294,7 +286,6 @@ public class OmniConvertApp extends JFrame {
                 );
                 String label = labels.getOrDefault(targetFormat.toLowerCase(), "конвертировано");
 
-                // Делаем копию списка, чтобы можно было безопасно итерироваться
                 List<File> filesToProcess = new ArrayList<>(selectedFiles);
 
                 for (int i = 0; i < filesToProcess.size(); i++) {
@@ -374,9 +365,7 @@ public class OmniConvertApp extends JFrame {
         });
     }
 
-    // ==========================================
-    // КАСТОМНАЯ КНОПКА
-    // ==========================================
+
     class GradientButton extends JButton {
         public GradientButton(String text) {
             super(text);
