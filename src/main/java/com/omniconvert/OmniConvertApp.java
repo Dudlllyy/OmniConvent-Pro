@@ -1,7 +1,5 @@
 package com.omniconvert;
-
 import com.formdev.flatlaf.FlatDarkLaf;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -16,9 +14,7 @@ public class OmniConvertApp extends JFrame {
 
     private UniversalConverter converter = new UniversalConverter();
     private List<File> selectedFiles = new ArrayList<>();
-    private boolean isExpanded = false; // Флаг состояния шторки
-
-    // Элементы интерфейса
+    private boolean isExpanded = false;
     private JLabel lblFileCount;
     private JButton btnToggle;
     private JPanel fileListPanel;
@@ -28,8 +24,6 @@ public class OmniConvertApp extends JFrame {
     private JLabel lblStatus;
 
     public OmniConvertApp() {
-
-// Настройка главного окна
         setTitle("OmniConvert Pro");
         setSize(480, 520);
         setMinimumSize(new Dimension(420, 500));
@@ -37,20 +31,17 @@ public class OmniConvertApp extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // Главная панель
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new EmptyBorder(25, 30, 25, 30));
-
-        // Заголовок
+        
         JLabel titleLabel = new JLabel("OmniConvert Pro");
         titleLabel.setFont(new Font("Segoe UI Black", Font.ITALIC, 28));
         titleLabel.setForeground(new Color(59, 130, 246));
         titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         mainPanel.add(titleLabel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-
-        // Кнопка выбора файлов
+        
         JButton btnSelect = new JButton("Выбрать файлы");
         btnSelect.setFont(new Font("Segoe UI Black", Font.BOLD, 14));
         btnSelect.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -59,9 +50,6 @@ public class OmniConvertApp extends JFrame {
         mainPanel.add(btnSelect);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 15)));
 
-        // ==========================================
-        // УМНАЯ ШТОРКА (АККОРДЕОН)
-        // ==========================================
         JPanel accordionHeader = new JPanel(new BorderLayout());
         accordionHeader.setOpaque(false);
         accordionHeader.setMaximumSize(new Dimension(800, 30));
@@ -77,31 +65,26 @@ public class OmniConvertApp extends JFrame {
         btnToggle.setForeground(new Color(148, 163, 184));
         btnToggle.setFont(new Font("Segoe UI", Font.BOLD, 12));
         btnToggle.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        btnToggle.setVisible(false); // Прячем, пока нет файлов
+        btnToggle.setVisible(false);
         btnToggle.addActionListener(e -> toggleFileList());
         accordionHeader.add(btnToggle, BorderLayout.EAST);
 
         mainPanel.add(accordionHeader);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 5)));
 
-        // Контейнер для списка файлов (скрыт по умолчанию)
         fileListPanel = new JPanel();
         fileListPanel.setLayout(new BoxLayout(fileListPanel, BoxLayout.Y_AXIS));
-        fileListPanel.setBackground(new Color(30, 41, 59)); // Темно-синий фон списка
+        fileListPanel.setBackground(new Color(30, 41, 59));
 
         scrollPane = new JScrollPane(fileListPanel);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(51, 65, 85), 1, true));
         scrollPane.setAlignmentX(Component.CENTER_ALIGNMENT);
-        scrollPane.setVisible(false); // Изначально спрятано
+        scrollPane.setVisible(false);
         scrollPane.getVerticalScrollBar().setUnitIncrement(10);
         mainPanel.add(scrollPane);
 
-        // Добавляем пружину, чтобы нижние элементы всегда были внизу
         mainPanel.add(Box.createVerticalGlue());
 
-        // ==========================================
-        // Нижняя панель
-        // ==========================================
         JLabel lblFormatTitle = new JLabel("Целевой формат:");
         lblFormatTitle.setFont(new Font("Segoe UI Black", Font.PLAIN, 14));
         lblFormatTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
