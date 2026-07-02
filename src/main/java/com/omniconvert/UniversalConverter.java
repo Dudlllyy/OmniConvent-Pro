@@ -1,8 +1,6 @@
 package com.omniconvert;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -16,7 +14,7 @@ import java.util.Map;
 
 public class UniversalConverter {
 
-    // ДОБАВЛЕНО: .webp и .ico теперь тоже в списке полноправных картинок!
+
     private final List<String> imageFormats = Arrays.asList(".png", ".jpg", ".jpeg", ".bmp", ".webp", ".ico");
     private final List<String> videoFormats = Arrays.asList(".mp4", ".avi", ".mkv", ".mov");
     private final List<String> audioFormats = Arrays.asList(".mp3", ".wav", ".ogg", ".flac");
@@ -42,7 +40,7 @@ public class UniversalConverter {
                 if (!f.equals(ext)) available.add(f);
             }
         }
-        // ИСПРАВЛЕНО: Научили маршрутизатор видеть GIF как входящий файл
+
         else if (ext.equals(".gif")) {
             available.addAll(Arrays.asList(".mp4", ".png", ".jpg", ".jpeg"));
         }
@@ -64,11 +62,10 @@ public class UniversalConverter {
         } else if (configFormats.contains(inputExt) && configFormats.contains(outputExt)) {
             convertConfig(inputPath, outputPath, inputExt, outputExt);
         }
-        // ИСПРАВЛЕНО: Добавили правила конвертации из GIF
+
         else if (inputExt.equals(".gif") && outputExt.equals(".mp4")) {
             convertGifToVideo(inputPath, outputPath);
         } else if (inputExt.equals(".gif") && Arrays.asList(".png", ".jpg", ".jpeg").contains(outputExt)) {
-            // Для перевода GIF в картинку используем стандартный метод (он просто возьмет первый кадр)
             convertImage(inputPath, outputPath, outputExt);
         }
         else {
@@ -76,7 +73,6 @@ public class UniversalConverter {
         }
     }
 
-    // 1. Универсальная конвертация изображений
     private void convertImage(String inputPath, String outputPath, String targetExt) throws IOException {
         File inputFile = new File(inputPath);
         File outputFile = new File(outputPath);
@@ -117,7 +113,6 @@ public class UniversalConverter {
         }
     }
 
-    // 2. Видео -> Аудио
     private void extractAudioFromVideo(String inputPath, String outputPath) throws IOException, InterruptedException {
         runFFmpegCommand(Arrays.asList("-i", inputPath, "-vn", "-acodec", "libmp3lame", "-y", outputPath));
     }
