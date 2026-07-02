@@ -117,7 +117,6 @@ public class UniversalConverter {
         runFFmpegCommand(Arrays.asList("-i", inputPath, "-vn", "-acodec", "libmp3lame", "-y", outputPath));
     }
 
-    // 3. Видео -> GIF
     private void convertVideoToGif(String inputPath, String outputPath) throws IOException, InterruptedException {
         runFFmpegCommand(Arrays.asList(
                 "-i", inputPath,
@@ -126,12 +125,10 @@ public class UniversalConverter {
         ));
     }
 
-    // 4. Аудио -> Аудио
     private void convertAudio(String inputPath, String outputPath) throws IOException, InterruptedException {
         runFFmpegCommand(Arrays.asList("-i", inputPath, "-y", outputPath));
     }
-
-    // 5. Конфигурации (JSON <-> YAML)
+    
     private void convertConfig(String inputPath, String outputPath, String inExt, String outExt) throws IOException {
         ObjectMapper jsonMapper = new ObjectMapper();
         ObjectMapper yamlMapper = new ObjectMapper(new YAMLFactory());
@@ -153,14 +150,9 @@ public class UniversalConverter {
         }
     }
 
-    // 6. ДОБАВЛЕНО: GIF -> Видео (MP4)
     private void convertGifToVideo(String inputPath, String outputPath) throws IOException, InterruptedException {
-        // Добавлен флаг -pix_fmt yuv420p, чтобы полученный MP4 файл без проблем
-        // открывался в Telegram, браузерах и стандартных плеерах Windows
         runFFmpegCommand(Arrays.asList("-i", inputPath, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-y", outputPath));
     }
-
-    // Метод запуска FFmpeg (портативный вариант)
     private void runFFmpegCommand(List<String> args) throws IOException, InterruptedException {
         List<String> command = new ArrayList<>();
         command.add(new File("ffmpeg.exe").getAbsolutePath());
